@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enis Selmani | Portfolio</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts -->
+    
+    <!-- Google Fonts (MUST be first if used in config) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Rock+Salt&display=swap" rel="stylesheet">
 
+    <!-- 
+        CRITICAL FIX: Tailwind configuration must be defined 
+        BEFORE the main Tailwind script is loaded for it to apply correctly.
+    -->
     <script>
         tailwind.config = {
             theme: {
@@ -38,6 +39,12 @@
             }
         }
     </script>
+    
+    <!-- Tailwind CSS (Loads AFTER config is set) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         /* Custom scrollbar for a polished look */
         ::-webkit-scrollbar {
