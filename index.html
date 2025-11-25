@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enis Selmani | Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Rock+Salt&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        ye: ['Rock Salt', 'cursive'], // The "Ye" style font
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0f172a', // Slate 900
+                            800: '#1e293b', // Slate 800
+                        },
+                        brand: {
+                            light: '#38bdf8', // Sky 400
+                            DEFAULT: '#0ea5e9', // Sky 500
+                            dark: '#0284c7', // Sky 600
+                        },
+                        accent: {
+                            green: '#4ade80', // Green for highlights
+                            purple: '#c084fc', // Purple for highlights
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for a polished look */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, visibility;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Floating Animation for the Avatar */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(3deg); }
+            50% { transform: translateY(-10px) rotate(0deg); }
+            100% { transform: translateY(0px) rotate(3deg); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Modal specific styles */
+        .modal {
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .modal-content {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Specific style to force image display in about section */
+        .avatar-img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures image covers the circle */
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-slate-300 font-sans antialiased selection:bg-brand-light selection:text-white">
+
+    <!-- Modal for Full Image (Hidden by Default) -->
+    <div id="imageModal" class="modal fixed inset-0 bg-black/80 z-[100] flex items-center justify-center opacity-0 invisible" onclick="closeModal()">
+        <div class="modal-content relative bg-dark-800 p-4 rounded-xl max-w-lg mx-4 transform scale-90" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute top-2 right-2 text-white hover:text-brand transition-colors p-2">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h3 class="text-white text-xl font-bold mb-4">Professional Portrait</h3>
+            <!-- Image source using original filename -->
+            <img src="IMG_2653.jpg" 
+                 alt="Enis Selmani Full Portrait" 
+                 class="w-full h-auto rounded-lg shadow-xl max-h-[80vh] object-contain"
+                 onerror="this.onerror=null; this.src='https://placehold.co/500x500/1e293b/94a3b8?text=Image+Load+Error';"
+            >
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-dark-900/90 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo/Name with "Ye" Album Style Font -->
+                <div class="flex-shrink-0 pt-2">
+                    <a href="#" class="text-xl sm:text-2xl font-ye text-white tracking-widest hover:text-brand-light transition-colors">
+                        Enis Selmani
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#about" class="hover:text-brand-light transition-colors px-3 py-2 text-sm font-medium">About</a>
+                        <a href="#experience" class="hover:text-brand-light transition-colors px-3 py-2 text-sm font-medium">Experience</a>
+                        <a href="#education" class="hover:text-brand-light transition-colors px-3 py-2 text-sm font-medium">Education</a>
+                        <a href="#projects" class="hover:text-brand-light transition-colors px-3 py-2 text-sm font-medium">Projects</a>
+                        <a href="#contact" class="hover:text-brand-light transition-colors px-3 py-2 text-sm font-medium">Contact</a>
+                        <a href="#" class="bg-brand hover:bg-brand-dark text-white px-4 py-2 rounded-full text-sm font-medium transition-all shadow-lg shadow-brand/25">
+                            Download Resume
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu and Portrait -->
+                <div class="-mr-2 flex items-center md:hidden">
+                    <!-- New Circular Portrait with Modal trigger (replaces 'More' button) -->
+                    <button onclick="openModal()" class="w-10 h-10 rounded-full overflow-hidden mr-2 p-0.5 border border-brand/50 hover:border-brand transition-colors flex-shrink-0">
+                        <!-- Image source using original filename -->
+                        <img src="IMG_2653.jpg" 
+                             alt="Enis Selmani Portrait" 
+                             class="w-full h-full object-cover rounded-full"
+                             onerror="this.onerror=null; this.src='https://placehold.co/40x40/1e293b/94a3b8?text=ES';"
+                        >
+                    </button>
+                    <!-- Mobile menu button -->
+                    <button type="button" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-white/10 focus:outline-none">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div class="md:hidden overflow-hidden transition-all duration-500 ease-in-out max-h-0 opacity-0 bg-dark-800 border-b border-white/10" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">About</a>
+                <a href="#experience" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Experience</a>
+                <a href="#education" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Education</a>
+                <a href="#projects" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Projects</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="text-slate-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Background decorative blob -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-brand-light/10 blur-3xl filter pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-purple-500/10 blur-3xl filter pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center lg:text-left">
+                <h2 class="text-accent-green font-semibold tracking-wide uppercase text-sm mb-4">Based in Montreux, Switzerland</h2>
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+                    Enis <span class="text-brand-light">Selmani</span>
+                </h1>
+                <p class="mt-4 max-w-2xl mx-auto lg:mx-0 text-xl text-slate-400">
+                    I am a <span class="text-white font-semibold">Sales & Marketing Professional</span> with a proven track record in <span class="text-brand-light">social media management</span> and <span class="text-accent-purple">high-impact campaigns</span>. I turn creative ideas into measurable results.
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="#projects" class="inline-flex justify-center items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-brand hover:bg-brand-dark md:text-lg transition-all shadow-lg shadow-brand/25">
+                        View Campaigns
+                        <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+                    </a>
+                    <a href="#contact" class="inline-flex justify-center items-center px-8 py-3 border border-slate-600 text-base font-medium rounded-md text-slate-300 hover:bg-white/5 md:text-lg transition-all">
+                        Contact Me
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-dark-800/50 fade-in-section">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+                <div class="mb-10 lg:mb-0 relative">
+                    <!-- Animated Avatar Container -->
+                    <div class="aspect-square rounded-full bg-gradient-to-b from-brand/20 to-purple-600/20 p-8 shadow-2xl animate-float">
+                        <div class="h-full w-full rounded-full flex items-center justify-center overflow-hidden border-4 border-brand-light/20 bg-dark-900">
+                            <!-- Image source using original filename and specific class for display properties -->
+                            <img src="IMG_2653.jpg" 
+                                 alt="Enis Selmani Animated Portrait" 
+                                 class="avatar-img rounded-full"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/400x400/1e293b/94a3b8?text=ES';"
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-6">About Me</h2>
+                    <p class="text-lg text-slate-400 mb-6 leading-relaxed">
+                        Driven by a fervent passion for <span class="text-brand-light font-medium">creativity and marketing</span>, I am a sales-focused professional with a proven track record in social media management. Having co-run a multi-platform channel, my <span class="text-accent-green font-medium">leadership skills</span> are deeply ingrained, consistently propelling me to lead in various settings.
+                    </p>
+                    <p class="text-lg text-slate-400 mb-8 leading-relaxed">
+                        This inclination towards leadership is complemented by robust <span class="text-accent-purple font-medium">problem-solving abilities</span>, honed through significant experience in the hospitality and sales sectors. I am eager to bring my dynamic skill set to new opportunities (Available <span class="text-white font-semibold">April 2026</span>).
+                    </p>
+                    
+                    <!-- Skills Tags -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">Core Skills</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-full bg-brand/10 text-brand-light text-sm border border-brand/20">Social Media Management</span>
+                            <span class="px-3 py-1 rounded-full bg-accent-purple/10 text-accent-purple text-sm border border-accent-purple/20">Content Creation</span>
+                            <span class="px-3 py-1 rounded-full bg-accent-green/10 text-accent-green text-sm border border-accent-green/20">Sales Strategy</span>
+                            <span class="px-3 py-1 rounded-full bg-brand/10 text-brand-light text-sm border border-brand/20">Leadership</span>
+                            <span class="px-3 py-1 rounded-full bg-white/5 text-white text-sm border border-white/20">Email Marketing</span>
+                            <span class="px-3 py-1 rounded-full bg-white/5 text-white text-sm border border-white/20">Problem Solving</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Experience Section -->
+    <section id="experience" class="py-20 bg-dark-900 fade-in-section">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">Work Experience</h2>
+            
+            <div class="relative border-l border-slate-700 ml-3 md:ml-6 space-y-12">
+                
+                <!-- Experience 1 -->
+                <div class="relative pl-8 md:pl-12">
+                    <div class="absolute -left-[9px] top-0 h-5 w-5 rounded-full border-4 border-dark-900 bg-brand-light"></div>
+                    <div>
+                        <span class="text-sm text-brand-light font-mono mb-1 block">May 2025 - Aug 2025</span>
+                        <h3 class="text-xl font-bold text-white">F&B Server</h3>
+                        <h4 class="text-lg text-slate-400 mb-4">Hotel Arts Barcelona • Barcelona, Spain</h4>
+                        <p class="text-slate-400 mb-4">
+                            Delivered exceptional luxury service by personalizing experiences for each guest. 
+                            <br>• Created <span class="text-accent-green">"Wow Stories"</span> through client collaboration.
+                            <br>• Managed daily high-volume tasks with precision and focus on guest satisfaction.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Experience 2 -->
+                <div class="relative pl-8 md:pl-12">
+                    <div class="absolute -left-[9px] top-0 h-5 w-5 rounded-full border-4 border-dark-900 bg-slate-600"></div>
+                    <div>
+                        <span class="text-sm text-slate-500 font-mono mb-1 block">Jun 2023 - Aug 2023</span>
+                        <h3 class="text-xl font-bold text-white">Pharmaceutical Sales Assistant</h3>
+                        <h4 class="text-lg text-slate-400 mb-4">Barnatore Viola • Ferizaj</h4>
+                        <p class="text-slate-400 mb-4">
+                            Gained hands-on experience in <span class="text-brand-light">sales strategy</span> and CRM.
+                            <br>• Developed strong <span class="text-accent-purple">persuasion</span> and presentation skills.
+                            <br>• Collaborated with pharmacists to ensure effective product prioritizing and promotion.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-20 bg-dark-800/30 fade-in-section">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">Education</h2>
+            
+            <div class="relative border-l border-slate-700 ml-3 md:ml-6 space-y-12">
+
+                <!-- Education 1 -->
+                <div class="relative pl-8 md:pl-12">
+                    <div class="absolute -left-[9px] top-0 h-5 w-5 rounded-full border-4 border-dark-800 bg-brand"></div>
+                    <div>
+                        <span class="text-sm text-brand-light font-mono mb-1 block">2027 (Expected)</span>
+                        <h3 class="text-xl font-bold text-white">BBA with Luxury Specialisation</h3>
+                        <h4 class="text-lg text-slate-400 mb-4">HIM Business Schools • Montreux</h4>
+                        <p class="text-slate-400">
+                            Focusing on business administration within the <span class="text-white">luxury sector</span>.
+                        </p>
+                    </div>
+                </div>
+
+                 <!-- Education 2 -->
+                 <div class="relative pl-8 md:pl-12">
+                    <div class="absolute -left-[9px] top-0 h-5 w-5 rounded-full border-4 border-dark-800 bg-slate-600"></div>
+                    <div>
+                        <span class="text-sm text-slate-500 font-mono mb-1 block">2024</span>
+                        <h3 class="text-xl font-bold text-white">High School Diploma</h3>
+                        <h4 class="text-lg text-slate-400 mb-4">Quality Schools International • Prishtina</h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-dark-800/30 fade-in-section">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">Marketing Campaigns & Projects</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project Card 1 -->
+                <div class="bg-dark-800 rounded-xl overflow-hidden border border-white/5 hover:border-brand/30 transition-all hover:shadow-2xl hover:shadow-brand/10 hover:-translate-y-1 group">
+                    <div class="h-48 bg-slate-700 relative overflow-hidden">
+                        <!-- Placeholder Pattern -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-brand-dark/20 to-purple-900/40"></div>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                            <i data-lucide="trending-up" class="w-12 h-12 text-white mb-2"></i>
+                            <span class="text-2xl font-bold text-white">300k+</span>
+                            <span class="text-sm text-slate-300">Avg Views per Video</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand-light transition-colors">HIB Petrol Campaign</h3>
+                            <span class="text-xs font-mono text-slate-500">2024 - 2025</span>
+                        </div>
+                        <p class="text-slate-400 mb-6 text-sm">
+                            Co-led "The Winning Formation" summer campaign. Managed promotion on <span class="text-brand-light">TikTok</span>, averaging 300,000 views per video.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            <span class="text-xs px-2 py-1 rounded bg-slate-700 text-slate-300">TikTok Marketing</span>
+                            <span class="text-xs px-2 py-1 rounded bg-slate-700 text-slate-300">Campaign Management</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 2 (TRP MATRIX) -->
+                <div class="bg-dark-800 rounded-xl overflow-hidden border border-white/5 hover:border-brand/30 transition-all hover:shadow-2xl hover:shadow-brand/10 hover:-translate-y-1 group flex flex-col">
+                    <div class="h-48 bg-slate-700 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-blue-900/40 to-emerald-900/40"></div>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                            <i data-lucide="users" class="w-12 h-12 text-white mb-2"></i>
+                            <span class="text-2xl font-bold text-white">100k+</span>
+                            <span class="text-sm text-slate-300">Avg Views per Video</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand-light transition-colors">TRP Matrix Channel</h3>
+                            <span class="text-xs font-mono text-slate-500">2023 - 2024</span>
+                        </div>
+                        <p class="text-slate-400 mb-6 text-sm">
+                            Social Media Manager for a multi-platform channel. Executed successful campaigns making it one of the <span class="text-accent-green">best performing channels</span> in the Albanian social media scene.
+                        </p>
+                        
+                        <!-- Social Links Container -->
+                        <div class="mt-auto pt-4 border-t border-white/5">
+                            <p class="text-xs text-slate-500 mb-3 uppercase tracking-wider font-semibold">Follow Channel</p>
+                            <div class="flex gap-3">
+                                <a href="https://www.tiktok.com/@learttbucaliu" target="_blank" class="flex items-center justify-center px-3 py-2 bg-slate-700 hover:bg-black text-white rounded text-xs transition-colors w-full">
+                                    <!-- Custom SVG for TikTok -->
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                                    TikTok
+                                </a>
+                                <a href="https://www.youtube.com/@TRPMatrix" target="_blank" class="flex items-center justify-center px-3 py-2 bg-slate-700 hover:bg-red-600 text-white rounded text-xs transition-colors w-full">
+                                    <i data-lucide="youtube" class="w-4 h-4 mr-2"></i>
+                                    YouTube
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 3 -->
+                <div class="bg-dark-800 rounded-xl overflow-hidden border border-white/5 hover:border-brand/30 transition-all hover:shadow-2xl hover:shadow-brand/10 hover:-translate-y-1 group">
+                    <div class="h-48 bg-slate-700 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-pink-900/40 to-brand-dark/20"></div>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                            <i data-lucide="mic-2" class="w-12 h-12 text-white mb-2"></i>
+                            <span class="text-lg font-bold text-white">Diplomacy & Debate</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white group-hover:text-brand-light transition-colors">Model United Nations</h3>
+                            <span class="text-xs font-mono text-slate-500">2023</span>
+                        </div>
+                        <p class="text-slate-400 mb-6 text-sm">
+                            Developed key experience in <span class="text-accent-purple">politics and debating</span>. Honed problem-solving skills through diplomatic simulations and negotiations.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            <span class="text-xs px-2 py-1 rounded bg-slate-700 text-slate-300">Public Speaking</span>
+                            <span class="text-xs px-2 py-1 rounded bg-slate-700 text-slate-300">Negotiation</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 relative overflow-hidden">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="text-3xl font-bold text-white mb-6">Get In Touch</h2>
+            <p class="text-slate-400 text-lg mb-10">
+                I am currently looking for new opportunities in marketing and sales. Whether you have a question or just want to discuss a potential collaboration, my inbox is always open!
+            </p>
+            
+            <a href="mailto:enisselmanii2@gmail.com" class="inline-flex items-center justify-center px-8 py-4 border border-brand text-brand-light hover:bg-brand/10 rounded-md text-lg font-medium transition-all mb-12">
+                <i data-lucide="mail" class="mr-2 w-5 h-5"></i>
+                enisselmanii2@gmail.com
+            </a>
+
+            <div class="flex justify-center space-x-8">
+                <!-- Add your actual social links here -->
+                <a href="#" class="text-slate-400 hover:text-brand-light transition-colors transform hover:scale-110">
+                    <i data-lucide="linkedin" class="w-8 h-8"></i>
+                    <span class="sr-only">LinkedIn</span>
+                </a>
+            </div>
+            <p class="mt-8 text-slate-500">+41 079 504 11 06</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/10 bg-dark-900 text-center">
+        <p class="text-slate-500 text-sm">
+            &copy; 2025 Enis Selmani. All rights reserved.
+        </p>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('max-h-0')) {
+                // Open menu
+                menu.classList.remove('max-h-0', 'opacity-0');
+                menu.classList.add('max-h-96', 'opacity-100');
+            } else {
+                // Close menu
+                menu.classList.remove('max-h-96', 'opacity-100');
+                menu.classList.add('max-h-0', 'opacity-0');
+            }
+        }
+
+        // Modal Functions
+        function openModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('invisible', 'opacity-0');
+            modal.classList.add('visible', 'opacity-100');
+            document.querySelector('.modal-content').classList.remove('scale-90');
+            document.querySelector('.modal-content').classList.add('scale-100');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('visible', 'opacity-100');
+            modal.classList.add('invisible', 'opacity-0');
+            document.querySelector('.modal-content').classList.remove('scale-100');
+            document.querySelector('.modal-content').classList.add('scale-90');
+        }
+
+        // Fade In Animation Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
